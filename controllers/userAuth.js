@@ -7,9 +7,13 @@ import User from '../models/userModel.js';
     path: '/api/user/signup',
     METHOD: post,
 */
-export const userSignup = async (req, res) => {
+export const userSignup = async (req, res , next) => {
     try {
-        const {username , email, password} = req.body;
+        const {username , email, gender , age, password} = req.body;
+
+        if(!username || !email || !gender || !age || !password) {
+            return res.json({error: 'Invalid Entries'});
+        }
 
         const isExistingUser = await User.findOne({email : email});
 
@@ -22,6 +26,8 @@ export const userSignup = async (req, res) => {
         const user = new User ({
             username, 
             email,
+            gender,
+            age,
             password: securePassword
         });
 
@@ -31,7 +37,7 @@ export const userSignup = async (req, res) => {
 
     } catch (error) {
         console.log(error);
-        return res.status(500).json({error: 'Server errror'});
+        next(error);
     }
 }
 
@@ -41,9 +47,14 @@ export const userSignup = async (req, res) => {
     path: '/api/user/login',
     METHOD: post
 */
-export const loginUser = async (req, res) => {
+export const loginUser = async (req, res, next) => {
     try {
         const {email , password} = req.body;
+
+        if( !email ||  !password) {
+            return res.json({error: 'Invalid Entries'});
+        }
+
 
         const existingUser = await User.findOne({email : email});
 
@@ -73,6 +84,6 @@ export const loginUser = async (req, res) => {
 
     } catch (error) {
         console.log(error);
-        return res.status(500).json({error: 'Server errror'});
+        next(error);
     }
 }

@@ -21,7 +21,7 @@ const verifyUserToken = async (req, res, next) => {
             return res.status(401).json({error: 'Unauthorized, invalid Token'});
         }
 
-        const user = await User.findOne({_id : decodedToken.userId});
+        const user = await User.findOne({_id : decodedToken.userId} , {username: 1, _id: 1 , email: 1});
 
         if(!user) {
             return res.status(401).json({error: 'Unauthorized entry'});

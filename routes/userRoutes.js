@@ -1,6 +1,6 @@
 import express from 'express';
 import { loginUser, userSignup } from '../controllers/userAuth.js';
-import { getAllUsers, getSingleUser } from '../controllers/userDataController.js';
+import { getAllUsers, getSingleUser , updateUser } from '../controllers/userDataController.js';
 import verify from '../middlewares/authorizeUser.js'
 const router = express.Router();
 
@@ -24,9 +24,15 @@ router.get('/alluser', verify, getAllUsers);
 
 
 /*
-    path: '/api/user/single/:userId',
+    path: '/api/user/single',
 */
 router.get('/single' , verify ,  getSingleUser);
+
+
+/*
+    path: '/api/user/edit',
+*/
+router.put('/edit' , verify , updateUser);
 
 
 export default router;
